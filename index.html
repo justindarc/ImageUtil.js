@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]>    <html class="no-js iem7"> <![endif]-->
+<!--[if (gt IEMobile 7)|!(IEMobile)]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>image-util.js</title>
+  <meta name="description" content="">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="cleartype" content="on">
+</head>
+<body>
+  <button data-filter="grayscale">Grayscale</button>
+  <button data-filter="brightness" data-options="{ value: -10 }">Brightness (-10)</button>
+  <button data-filter="brightness" data-options="{ value:  10 }">Brightness (+10)</button>
+  <button data-filter="threshold" data-options="{ value:   64 }">Threshold (64)</button>
+  <button data-filter="threshold" data-options="{ value:  128 }">Threshold (128)</button>
+  <button data-filter="threshold" data-options="{ value:  192 }">Threshold (192)</button>
+  <button data-filter="sharpen">Sharpen</button>
+  <button data-filter="blur">Blur</button>
+  <button data-scale="0.5">Scale (0.5x)</button>
+  <button data-scale="1.5">Scale (1.5x)</button>
+  <button data-scale="2">Scale (2x)</button>
+  
+  <img id="image" src="sample.jpg">
+
+  <script src="image-util.js"></script>
+  <script>
+    var image = document.getElementById('image');
+
+    var imageUtil = new ImageUtil();
+    imageUtil.loadImage(image.src);
+
+    document.body.addEventListener('click', function(evt) {
+      var target = evt.target;
+      if (target.tagName !== 'BUTTON') return;
+
+      var scale = target.getAttribute('data-scale');
+      var filter = target.getAttribute('data-filter');
+      var options = eval('(' + target.getAttribute('data-options') + ')');
+
+      if (scale) {
+        imageUtil.scale(scale);
+      }
+
+      else {
+        imageUtil.applyFilter(ImageUtil.Filters[filter], options);
+      }
+
+      image.src = imageUtil.toDataURL('image/jpeg');
+    });
+  </script>
+</body>
+</html>
